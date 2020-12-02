@@ -1,0 +1,3 @@
+(executable
+  (name 02)
+  (libraries angstrom containers))
