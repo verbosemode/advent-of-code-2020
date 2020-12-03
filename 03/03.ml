@@ -19,7 +19,8 @@ let calc_max_rows steps width =
 
 let step_indices steps width max_len =
   let rec aux a i =
-    if i >= max_len then a
+    if i > max_len then a
+    (* else aux ([i; i + 1; i + 3] @ a) (i + steps + width) *)
     else aux (i :: a) (i + steps + width)
   in
   aux [] 0
@@ -31,10 +32,10 @@ let () =
   let max_rows = calc_max_rows steps width in
   let max_len = width * max_rows in
   let indices = step_indices steps width max_len in
-  let s = CCIO.with_in filename CCIO.read_all in
-  let s = CCString.replace ~sub:"\n" ~by:"" s in
+  (* let s = CCIO.with_in filename CCIO.read_all in *)
+  (* let s = CCString.replace ~sub:"\n" ~by:"" s in *)
   (* let s = CCList.fold_left (fun a i -> CCString.of_char (CCString.get s i) ^ a) "" indices in *)
-  CCList.iter (fun i -> Printf.printf "%c\n" (CCString.get s i)) indices
+  List.iter (fun i -> Printf.printf "%i\n" i) indices
   (* CCString.find_all_l ~sub:"#" s *)
   (* |> CCList.length *)
   (* |> print_int *)
