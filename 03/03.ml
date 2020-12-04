@@ -1,6 +1,12 @@
 (*
 
-1. fold string into one line
+1. Move forward
+2. At bounds?
+  - yes -> Reverse string
+  - no
+
+
+2. fold string into one line
 
 
 *)
@@ -32,10 +38,11 @@ let () =
   let max_rows = calc_max_rows steps width in
   let max_len = width * max_rows in
   let indices = step_indices steps width max_len in
-  (* let s = CCIO.with_in filename CCIO.read_all in *)
-  (* let s = CCString.replace ~sub:"\n" ~by:"" s in *)
-  (* let s = CCList.fold_left (fun a i -> CCString.of_char (CCString.get s i) ^ a) "" indices in *)
-  List.iter (fun i -> Printf.printf "%i\n" i) indices
-  (* CCString.find_all_l ~sub:"#" s *)
-  (* |> CCList.length *)
-  (* |> print_int *)
+  let s = CCIO.with_in filename CCIO.read_all in
+  let s = CCString.replace ~sub:"\n" ~by:"" s in
+  let s = CCList.fold_left (fun a i -> CCString.of_char (CCString.get s i) ^ a) "" indices in
+  Printf.printf "%s\n" s;
+  (* List.iter (fun i -> Printf.printf "%i\n" i) indices *)
+  CCString.find_all_l ~sub:"#" s
+  |> CCList.length
+  |> print_int
