@@ -1,16 +1,3 @@
-(*
-
-1. Move forward
-2. At bounds?
-  - yes -> Reverse string
-  - no
-
-
-2. fold string into one line
-
-
-*)
-
 let find_width filename =
   CCIO.with_in filename CCIO.read_line |> Option.get |> CCString.length
 
@@ -48,6 +35,12 @@ let rec reverse_fold i rows rev a l =
 
 let string_of_string_list = CCList.fold_left (fun a e -> a ^ e) ""
 
+let rec step_fold_list a i step_width l =
+  Printf.printf "%i " i;
+  if i >= CCList.length l then a
+  else
+    step_fold_list (CCList.nth l i :: a) (i + step_width) step_width l
+
 let () =
   let filename = Sys.argv.(1) in
   let steps = 3 in
@@ -57,13 +50,16 @@ let () =
   let lines = reverse_fold 1 max_rows false [] lines in
   let lines = CCList.rev lines in
   let s = string_of_string_list lines in
-  print_string s
+  let l = CCString.to_list s in
+  let l = step_fold_list [] 0 (steps + width) l in
+  let trees = CCList.filter (fun e -> e = '#') l in
+  (* CCList.iter (Printf.printf "%c\n") trees *)
+  print_int (CCList.length trees)
 
   (* let max_len = width * max_rows in *)
   (* let indices = step_indices steps width max_len in *)
   (* let s = CCString.replace ~sub:"\n" ~by:"" s in *)
   (* Printf.printf "%s\n" s; *)
   (* List.iter (fun i -> Printf.printf "%i\n" i) indices *)
-  (* CCString.find_all_l ~sub:"#" s *)
   (* |> CCList.length *)
   (* |> print_int *)
