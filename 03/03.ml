@@ -1,17 +1,29 @@
+(*
+move step if row is max_row 3
+else move step + line_width 34
+*)
+
 let find_width filename =
   CCIO.with_in filename CCIO.read_line |> Option.get |> CCString.length
 
 let string_of_string_list = CCList.fold_left (fun a e -> a ^ e) ""
 
-let rec step_fold_list a i step_width l =
-  Printf.printf "%i " i;
-  if i >= CCList.length l then a
-  else
-    step_fold_list (CCList.nth l i :: a) (i + step_width) step_width l
+let step_fold_list steps row_len max_rows s =
+  let s_len = CCString.length s in
+  let rec aux a i row =
+    if i >= s_len then a
+    else
+      let step_width, row =
+        if row = max_rows then steps, 1 else (steps + row_len), (row + 1)
+      in
+      Printf.printf "step_width: %i row: %i\n" step_width row;
+      aux (CCString.get s i :: a) (i + step_width) row
+  in
+  aux [] 0 0
  
 let calc_max_rows steps width =
   let steps = Float.of_int steps in
-  let width = Float.of_int (width + 1) in
+  let width = Float.of_int width in
   width /. steps
   |> CCFloat.round
   |> CCInt.of_float
@@ -50,11 +62,12 @@ let calc_max_rows steps width =
 let () =
   let filename = Sys.argv.(1) in
   let steps = 3 in
-  let width = find_width filename in
+  let row_width = find_width filename in
+  let max_rows = calc_max_rows steps row_width in
+  Printf.printf "max rows %i\n" max_rows;
   let lines = CCIO.with_in filename CCIO.read_lines_l in
   let s = string_of_string_list lines in
-  let l = CCString.to_list s in
-  let l = step_fold_list [] 0 (steps + width) l in
-  List.iter (fun i -> Printf.printf "%c\n" i) l
-  (* let trees = CCList.filter (fun e -> e = '#') l in *)
-  (* print_int (CCList.length trees) *)
+  let l = step_fold_list steps row_width max_rows s in
+  List.iter (fun i -> Printf.printf "%c\n" i) l;
+  let trees = CCList.filter (fun e -> e = '#') l in
+  print_int (CCList.length trees)
