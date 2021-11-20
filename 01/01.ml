@@ -1,4 +1,5 @@
 let combine f x l = List.fold_left (fun a e -> f x e :: a) [] l
+
 let tuple (e : int) (l : int list) : (int * int) list =
   combine (fun x e' -> (x, e')) e l
 
@@ -28,12 +29,13 @@ let part2 data =
 let usage () = Printf.printf "usage: %s (part1|part2) filename" Sys.argv.(0)
 
 let () =
-  if Array.length Sys.argv != 3 then usage () else
-  let filename = Sys.argv.(2) in
-  let data =
-    CCList.map int_of_string (CCIO.with_in filename CCIO.read_lines_l)
-  in
-  match Sys.argv.(1) with
-  | "part1" -> part1 data
-  | "part2" -> part2 data 
-  | _ -> Printf.printf "usage: %s (part1|part2) filename\n" Sys.argv.(0)
+  if Array.length Sys.argv != 3 then usage ()
+  else
+    let filename = Sys.argv.(2) in
+    let data =
+      CCList.map int_of_string (CCIO.with_in filename CCIO.read_lines_l)
+    in
+    match Sys.argv.(1) with
+    | "part1" -> part1 data
+    | "part2" -> part2 data
+    | _ -> Printf.printf "usage: %s (part1|part2) filename\n" Sys.argv.(0)
