@@ -1,0 +1,9 @@
+(executable
+  (name 03)
+  (modules 03)
+  (libraries containers oseq))
+
+(executable
+  (name 03_2)
+  (modules 03_2)
+  (libraries containers oseq))
