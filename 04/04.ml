@@ -25,7 +25,8 @@ let parse_data l =
 
 let () =
   let filename = Sys.argv.(1) in
-  CCIO.with_in filename (fun ic -> ic |> CCIO.read_lines_l |> parse_data)
+  CCIO.with_in filename CCIO.read_lines_l
+  |> parse_data
   |> List.filter validate_passport
   |> List.length
   |> Printf.printf "Valid passports: %i\n"
