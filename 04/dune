@@ -1,0 +1,4 @@
+(executable
+  (name 04)
+  (modules 04)
+  (libraries containers oseq))
